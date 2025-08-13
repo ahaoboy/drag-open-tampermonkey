@@ -9,10 +9,13 @@
 // @run-at       document-start
 // @homepage     https://github.com/ahaoboy/drag-open-tampermonkey.git
 // @downloadURL  https://github.com/ahaoboy/drag-open-tampermonkey/raw/refs/heads/main/main.user.js
+// @updateURL    https://github.com/ahaoboy/drag-open-tampermonkey/raw/refs/heads/main/main.user.js
 // ==/UserScript==
 
-const DRAG_DISTANCE = 10
-const DRAG_TIME = 100
+// px
+const DRAG_DISTANCE = 6
+// ms
+const DRAG_TIME = 32
 const OVER_TIME = 1000
 
 let x1 = 0
