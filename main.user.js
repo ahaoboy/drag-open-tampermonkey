@@ -6,7 +6,7 @@
 // @author       ahaoboy
 // @match        *://*/*
 // @grant        GM_openInTab
-// @run-at       document-end
+// @run-at       document-start
 // @homepage     https://github.com/ahaoboy/drag-open-tampermonkey.git
 // @downloadURL  https://github.com/ahaoboy/drag-open-tampermonkey/raw/refs/heads/main/main.user.js
 // ==/UserScript==
