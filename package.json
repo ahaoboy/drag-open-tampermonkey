@@ -1,0 +1,20 @@
+{
+  "name": "drag-open-tampermonkey",
+  "version": "0.1.0",
+  "description": "drag-open-tampermonkey",
+  "main": "main.user.js",
+  "type": "module",
+  "scripts": {
+    "dev": "bun ./cli.ts dev",
+    "build": "bun ./cli.ts build"
+  },
+  "keywords": [],
+  "author": "ahaoboy",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^24.2.1",
+    "@types/tampermonkey": "^5.0.4",
+    "esbuild": "^0.25.9",
+    "typescript": "^5.9.2"
+  }
+}
