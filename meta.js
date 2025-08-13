@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         drag-open-tampermonkey
 // @namespace    http://tampermonkey.net/
-// @version      0.1.0
+// @version      __VERSION__
 // @description  drag the link to open a new tab
 // @author       ahaoboy
 // @match        *://*/*
