@@ -1,9 +1,10 @@
 import { readFileSync } from "fs";
 import { build, context } from "esbuild";
+import process from "node:process";
 
 const bannerText = readFileSync("./meta.js", "utf8");
-const outfile = "./main.user.js"
-const entryPoints = ["./main.ts"]
+const outfile = "./main.user.js";
+const entryPoints = ["./main.ts"];
 async function runDev() {
   console.log("🚀 Starting dev build (watch mode)...");
   const ctx = await context({
@@ -14,8 +15,8 @@ async function runDev() {
     sourcemap: true,
     minify: false,
   });
-  await ctx.watch()
-  console.log('watching...')
+  await ctx.watch();
+  console.log("watching...");
 }
 
 async function runBuild() {

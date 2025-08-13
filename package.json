@@ -5,6 +5,7 @@
   "main": "main.user.js",
   "type": "module",
   "scripts": {
+    "pre-check": "deno fmt && deno lint --fix",
     "dev": "bun ./cli.ts dev",
     "build": "bun ./cli.ts build"
   },
