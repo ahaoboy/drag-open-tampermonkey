@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         drag-open
+// @name         drag-open-tampermonkey
 // @namespace    http://tampermonkey.net/
 // @version      0.1.0
 // @description  drag the link to open a new tab
@@ -7,6 +7,8 @@
 // @match        *://*/*
 // @grant        GM_openInTab
 // @run-at       document-end
+// @homepage     https://github.com/ahaoboy/drag-open-tampermonkey.git
+// @downloadURL  https://github.com/ahaoboy/drag-open-tampermonkey/raw/refs/heads/main/main.user.js
 // ==/UserScript==
 
 const DRAG_DISTANCE = 10
