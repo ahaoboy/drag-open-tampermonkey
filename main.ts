@@ -58,6 +58,11 @@ function clean() {
   hideDiv();
 }
 
+function timeout() {
+  const t = performance.now() - lastTime;
+  return t > MAX_TIME;
+}
+
 function check(e: MouseEvent) {
   if (!lastLink) {
     return;
@@ -109,7 +114,7 @@ function getLink(el: HTMLElement) {
   return fullUrl;
 }
 
-document.addEventListener("mousedown", (e) => {
+function mousedown(e: MouseEvent) {
   log("mousedown", e, check(e));
   if (lastLink) {
     return;
@@ -118,55 +123,69 @@ document.addEventListener("mousedown", (e) => {
   y1 = e.pageY;
   lastTime = performance.now();
   lastLink = getLink(e.target as HTMLElement);
-}, HANDLE_OPTION);
+}
 
 function stopEvent(e: MouseEvent) {
   e.stopPropagation();
   e.preventDefault();
   e.stopImmediatePropagation();
 }
-document.addEventListener("mouseup", (e) => {
+function mouseup(e: MouseEvent) {
   log("mouseup", e, check(e));
-  if (!lastLink) {
-    return;
-  }
-  if (!check(e)) {
+  if (!lastLink || !check(e)) {
     clean();
     return;
   }
   stopEvent(e);
   GM_openInTab(lastLink, { active: e.shiftKey });
   clean();
-}, HANDLE_OPTION);
+}
 
-document.addEventListener("drop", (e) => {
+function drop(e: MouseEvent) {
   log("drop", e, check(e));
-  if (!lastLink) {
-    return;
-  }
-  if (!check(e)) {
+  if (!lastLink || !check(e)) {
     clean();
     return;
   }
   GM_openInTab(lastLink, { active: e.shiftKey });
   stopEvent(e);
   clean();
-}, HANDLE_OPTION);
+}
 
-document.addEventListener("dragover", (e) => {
+function dragover(e: MouseEvent) {
   log("dragover", e, check(e));
-  if (!lastLink) {
+  if (!lastLink || timeout()) {
+    clean();
     return;
   }
   updateDiv(e);
   stopEvent(e);
   return true;
-}, HANDLE_OPTION);
+}
 
-document.addEventListener("mousemove", (e) => {
-  if (!lastLink) {
+function mousemove(e: MouseEvent) {
+  if (!lastLink || timeout()) {
+    clean();
     return;
   }
   log("mousemove", e, check(e));
   updateDiv(e);
-}, HANDLE_OPTION);
+}
+
+const BIND_MAP = [
+  ["mousedown", mousedown],
+  ["mousemove", mousemove],
+  ["dragover", dragover],
+  ["mouseup", mouseup],
+  ["drop", drop],
+] as const;
+
+function init() {
+  log("init");
+  for (const [key, fn] of BIND_MAP) {
+    document.removeEventListener(key, fn, HANDLE_OPTION);
+    document.addEventListener(key, fn, HANDLE_OPTION);
+  }
+}
+
+init();
