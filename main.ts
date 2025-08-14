@@ -13,12 +13,12 @@ const DPR = globalThis.devicePixelRatio || 1;
 // radius px
 const RADIUS_DPR = (RADIUS * DPR) | 0;
 
-// const HANDLE_OPTION = {
-//   capture: true,
-//   once: false,
-//   passive: true
-// }
-const HANDLE_OPTION = undefined;
+const HANDLE_OPTION = {
+  capture: true,
+  once: false,
+  passive: false,
+};
+// const HANDLE_OPTION = undefined;
 
 const DIV = document.createElement("div");
 
@@ -40,6 +40,7 @@ let x1 = 0;
 let y1 = 0;
 let lastTime = 0;
 let lastLink: string | undefined = undefined;
+let timeoutHandle = 0
 
 function distance({ pageX, pageY }: MouseEvent) {
   return (((x1 - pageX) ** 2) + ((y1 - pageY) ** 2)) ** 0.5;
@@ -47,7 +48,7 @@ function distance({ pageX, pageY }: MouseEvent) {
 
 function log(...args: unknown[]) {
   if (DEBUG) {
-    console.log(...args);
+    console.log("[drag-open]", ...args);
   }
 }
 function clean() {
@@ -63,20 +64,17 @@ function timeout() {
   return t > MAX_TIME;
 }
 
-function check(e: MouseEvent) {
-  if (!lastLink) {
-    return;
-  }
-  const d = distance(e);
-
-  if (d < MIN_DISTANCE || d > MAX_DISTANCE) {
-    return;
-  }
+function checkTime() {
   const t = performance.now() - lastTime;
-  if (t < MIN_TIME || t > MAX_TIME) {
-    return;
-  }
-  return true;
+  return t >= MIN_TIME && t <= MAX_TIME;
+}
+function checkArea(e: MouseEvent) {
+  const d = distance(e);
+  return d >= MIN_DISTANCE && d <= MAX_DISTANCE;
+}
+
+function check(e: MouseEvent) {
+  return !!lastLink && checkTime() && checkArea(e);
 }
 
 function updateDiv(e: MouseEvent) {
@@ -111,6 +109,7 @@ function getLink(el: HTMLElement) {
   const fullUrl = href.includes("://")
     ? href
     : new URL(href, globalThis.location.href).href;
+  log("getLink", a, fullUrl);
   return fullUrl;
 }
 
@@ -123,6 +122,13 @@ function mousedown(e: MouseEvent) {
   y1 = e.pageY;
   lastTime = performance.now();
   lastLink = getLink(e.target as HTMLElement);
+
+  clearTimeout(timeoutHandle)
+  timeoutHandle = 0
+  timeoutHandle = +setTimeout(() => {
+    log("timeout clean")
+    clean()
+  }, MAX_TIME);
 }
 
 function stopEvent(e: MouseEvent) {
@@ -136,8 +142,9 @@ function mouseup(e: MouseEvent) {
     clean();
     return;
   }
+  // FIXME: Prevent opening a new tab and clicking on the video
   stopEvent(e);
-  GM_openInTab(lastLink, { active: e.shiftKey });
+  // GM_openInTab(lastLink, { active: e.shiftKey });
   clean();
 }
 
@@ -174,6 +181,7 @@ function mousemove(e: MouseEvent) {
 
 const BIND_MAP = [
   ["mousedown", mousedown],
+  // ["click", mousedown],
   ["mousemove", mousemove],
   ["dragover", dragover],
   ["mouseup", mouseup],
