@@ -18,6 +18,9 @@ async function runDev() {
     bundle: true,
     sourcemap: true,
     minify: false,
+    define: {
+      __DEBUG__: "true",
+    },
   });
   await ctx.watch();
   console.log("watching...");
@@ -32,6 +35,9 @@ async function runBuild() {
     bundle: true,
     minify: false,
     sourcemap: false,
+    define: {
+      __DEBUG__: "false",
+    },
   });
   console.log("✅ Production build completed!");
 }

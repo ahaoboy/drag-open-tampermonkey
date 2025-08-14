@@ -1,10 +1,12 @@
+declare const __DEBUG__: boolean;
+
 // px
 const RADIUS = 4;
 const MIN_DISTANCE = 6;
 const MAX_DISTANCE = 200;
 const COLOR = "yellow";
 const TRANSPARENT = "#00000000";
-const DEBUG = false;
+const DEBUG = __DEBUG__;
 // ms
 const MIN_TIME = 32;
 const MAX_TIME = 2000;
@@ -40,7 +42,7 @@ let x1 = 0;
 let y1 = 0;
 let lastTime = 0;
 let lastLink: string | undefined = undefined;
-let timeoutHandle = 0
+let timeoutHandle = 0;
 
 function distance({ pageX, pageY }: MouseEvent) {
   return (((x1 - pageX) ** 2) + ((y1 - pageY) ** 2)) ** 0.5;
@@ -103,6 +105,7 @@ function findClosestLink(element: HTMLElement | null) {
 function getLink(el: HTMLElement) {
   const a = findClosestLink(el);
   if (!a) {
+    log("getLink not fount", el);
     return;
   }
   const href = a.getAttribute("href") || "";
@@ -123,12 +126,14 @@ function mousedown(e: MouseEvent) {
   lastTime = performance.now();
   lastLink = getLink(e.target as HTMLElement);
 
-  clearTimeout(timeoutHandle)
-  timeoutHandle = 0
-  timeoutHandle = +setTimeout(() => {
-    log("timeout clean")
-    clean()
-  }, MAX_TIME);
+  if (lastLink) {
+    clearTimeout(timeoutHandle);
+    timeoutHandle = 0;
+    timeoutHandle = +setTimeout(() => {
+      log("timeout clean");
+      clean();
+    }, MAX_TIME);
+  }
 }
 
 function stopEvent(e: MouseEvent) {
