@@ -38,6 +38,7 @@ DIV.style.zIndex = (2 ** 31 - 1).toString();
 DIV.style.pointerEvents = "none";
 DIV.style.userSelect = "none";
 DIV.style.borderRadius = "50%";
+DIV.style.display = "none";
 let x1 = 0;
 let y1 = 0;
 let lastTime = 0;
