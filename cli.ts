@@ -3,10 +3,7 @@ import { build, context } from "esbuild";
 import PKG from "./package.json" with { type: "json" };
 import process from "node:process";
 
-const bannerText = readFileSync("./meta.js", "utf8").replace(
-  "__VERSION__",
-  PKG.version,
-);
+const bannerText = readFileSync("./meta.txt", "utf8").replace("__VERSION__", PKG.version);
 const outfile = "./main.user.js";
 const entryPoints = ["./main.ts"];
 async function runDev() {

@@ -2,20 +2,22 @@
   "name": "drag-open-tampermonkey",
   "version": "0.1.0",
   "description": "drag-open-tampermonkey",
-  "main": "main.user.js",
+  "keywords": [],
+  "license": "MIT",
+  "author": "ahaoboy",
   "type": "module",
+  "main": "main.user.js",
   "scripts": {
-    "pre-check": "deno fmt && deno lint --fix",
+    "pre-check": "oxfmt && oxlint --fix",
     "dev": "bun ./cli.ts dev",
     "build": "bun ./cli.ts build"
   },
-  "keywords": [],
-  "author": "ahaoboy",
-  "license": "MIT",
   "devDependencies": {
-    "@types/node": "^24.2.1",
-    "@types/tampermonkey": "^5.0.4",
-    "esbuild": "^0.25.9",
-    "typescript": "^5.9.2"
+    "@types/node": "^26.6.2",
+    "@types/tampermonkey": "^5.5.0",
+    "esbuild": "^0.28.2",
+    "oxfmt": "^0.70.0",
+    "oxlint": "^1.85.0",
+    "typescript": "^7.0.2"
   }
 }
